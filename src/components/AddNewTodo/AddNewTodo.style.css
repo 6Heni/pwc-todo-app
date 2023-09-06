@@ -1,0 +1,10 @@
+.add-todo-button {
+  width: 100%;
+}
+
+.buttonIcon {
+  width: 1em;
+  height: 1em;
+  margin-right: 10px;
+  vertical-align: -0.125em;
+}

@@ -1,63 +1,68 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
+import { TodoData } from './types';
+
+const URL = 'http://localhost:5173/todoitems';
+
+const staggeredBaseQuery = retry(
+  fetchBaseQuery({
+    baseUrl: URL,
+    prepareHeaders: (headers) => {
+      headers.set('Content-Type', 'application/json');
+      headers.set('Access-Control-Allow-Origin', '*');
+      return headers;
+    },
+  }),
+  { maxRetries: 2 }
+);
 
 export const dataAPI = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://apicallinterview.azurewebsites.net/todoitems',
-  }),
+  baseQuery: staggeredBaseQuery,
   tagTypes: ['Todos'],
   endpoints: (builder) => ({
     getTodos: builder.query({
-      // query: (queryParams: QueryParams = initialQueryParams) => {
-      //   const { selectedGenres, sortBy, sortOrder, searchValue } = queryParams;
-      //   let queryString = `?sortBy=${sortBy}&sortOrder=${sortOrder}`;
-      //   if (selectedGenres.length > 0) {
-      //     queryString += `&filter=${selectedGenres.join(',')}`;
-      //   }
-      //   if (searchValue) {
-      //     queryString += `&search=${searchValue}&searchBy=title`;
-      //   }
-      //   return queryString;
-      // },
-      query: () => '',
-      // transformResponse: (responseData: ResponseDataType) => responseData.data,
+      query: () => ({
+        url: '',
+      }),
       providesTags: ['Todos'],
     }),
-    // addMovie: builder.mutation({
-    //   query: (movie) => ({
-    //     url: ``,
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: movie,
-    //   }),
-    //   invalidatesTags: ['Todos'],
-    // }),
-    // updateMovie: builder.mutation({
-    //   query: (movie) => ({
-    //     url: ``,
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: movie,
-    //   }),
-    //   invalidatesTags: ['Todos'],
-    // }),
-    // deleteMovie: builder.mutation({
-    //   query: (movieId) => ({
-    //     url: `${movieId}`,
-    //     method: 'DELETE',
-    //   }),
-    //   invalidatesTags: ['Todos'],
-    // }),
+    addTodo: builder.mutation({
+      query: (todoName: string) => ({
+        url: ``,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          name: todoName,
+          isComplete: false,
+        },
+      }),
+      invalidatesTags: ['Todos'],
+    }),
+    updateTodo: builder.mutation({
+      query: (todo: TodoData) => ({
+        url: `${todo.id}`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: todo,
+      }),
+      invalidatesTags: ['Todos'],
+    }),
+    deleteTodo: builder.mutation({
+      query: (todoId: number) => ({
+        url: `${todoId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Todos'],
+    }),
   }),
 });
 
-// Export hooks for usage in functional components
 export const {
   useGetTodosQuery,
-  // useAddMovieMutation,
-  // useUpdateMovieMutation,
-  // useDeleteMovieMutation,
+  useAddTodoMutation,
+  useUpdateTodoMutation,
+  useDeleteTodoMutation,
 } = dataAPI;

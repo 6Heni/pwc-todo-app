@@ -1,0 +1,26 @@
+@import "bootstrap/scss/functions"; 
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+$headings-font-family: 'Pacifico', cursive;
+$font-family-base: 'Roboto', sans-serif;
+
+$primary: #0B3954;
+$secondary: #087E8B;
+$info: #C0E1E0;
+$warning: #FF5A5F;
+$danger: #C81D25;
+$light: #f8f9fa;
+$dark: #343a40;
+
+$theme-colors: (
+  primary: $primary,
+  secondary: $secondary,
+  info: $info,
+  warning: $warning,
+  danger: $danger,
+  light: $light,
+  dark: $dark,
+);
+
+@import "bootstrap";

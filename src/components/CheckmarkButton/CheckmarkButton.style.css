@@ -1,0 +1,9 @@
+.checkmark {
+  margin-right: 10px;
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.checkmark:hover {
+  cursor: pointer;
+}

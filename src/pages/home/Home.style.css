@@ -1,0 +1,29 @@
+.intro {
+  display: grid;
+}
+
+.logoCol {
+  text-align: center;
+}
+
+.logo {
+  rotate: 20deg;
+}
+
+.intro-description {
+  font-family: 'Roboto';
+}
+
+@media only screen and (max-width: 768px) {
+  .intro {
+    background-color: #087E8B;
+    margin-top: 20% !important;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .intro > h4 {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
